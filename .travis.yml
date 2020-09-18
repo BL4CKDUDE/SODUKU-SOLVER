@@ -1,5 +1,0 @@
-language: java
-jdk:
-  - oraclejdk13
-
-script: ant build
