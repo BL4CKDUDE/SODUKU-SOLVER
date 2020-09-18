@@ -1,7 +1,5 @@
 language: java
-
 jdk:
   - oraclejdk13
 
-# install:
-#   - ./gradlew assemble -x signArchives
+script: ant build
