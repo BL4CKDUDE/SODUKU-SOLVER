@@ -11,15 +11,67 @@ public class Solver {
 			this.col = col;
 		}
 		
-		public void FillSoduku() {
-			System.out.println("Backtracking must happen here");
+		public int[] findEmpty() {
+			int [] coord = new int[2];
+			coord[0] = 100;
+			coord[1] = 100;
+			for(int row=0; row < 9; row++) {
+				for(int col =0; col < 9; col++) {
+					if(board[row][col] == 0) {
+						coord[0] = row;
+						coord[1] = col;
+					}
+				}
+			}
+			return coord;
+		}
+		
+		public Boolean FillSoduku() {
+//			System.out.println("Backtracking must happen here");
+			int [] fillCoord = findEmpty();
+			
+			if(fillCoord[0] == 100 && fillCoord[1] == 100) {				
+				return true; 
+			}
+			
+			int r = fillCoord[0];
+			int c = fillCoord[1];
+			
+//			print(r+"" + "," + c + "");
+			
+			for(int num = 1 ; num <= 9;  num++) {
+				
+				if (isSafe(r,c,num)) {
+				board[r][c] = num;
+				
+				if( FillSoduku()) {
+					return true;
+				}
+				
+				board[r][c] = 0;
+				
+				}
+			}
+			
+			return false;
+		}
+		
+		// Checking everything at once
+		
+		public Boolean isSafe(int row, int col, int num) {
+			if(RowCheck(num,row,col) && ColCheck(num,row,col) && BlockCheck(num, row, col)) {
+				return true;
+			}
+			else {
+				return false;
+			}
 		}
 		
 		
 		// Here we check if its safe to fill in row as per soduku rules
 		
 		public Boolean RowCheck(int value, int r, int c) {
-			for(int i =0; i< c;i++) {
+			for(int i =0; i< 9;i++) {
 				if(value == board[r][i]) {
 					return false;
 				}
@@ -31,7 +83,7 @@ public class Solver {
 		// Here we check if its safe to fill in column as per soduku rules
 		
 		public Boolean ColCheck(int value, int r, int c) {
-			for(int i =0; i< r;i++) {
+			for(int i =0; i< 9;i++) {
 				if(value == board[i][c]) {
 					return false;
 				}
@@ -147,6 +199,42 @@ public class Solver {
 		}
 			
 			return true;
+		}
+		
+		
+		public void printBoard() {
+			Boolean changed = true;
+			
+			for (int i =0; i < 9;i++) {
+				for (int j =0; j < 9; j++) {
+					if(board[i][j] == 0) {
+						changed = false;
+					}
+				}
+			}
+			
+			if(changed) {
+			
+			String rowString = "";
+			for (int i =0; i < 9;i++) {
+				for (int j =0; j < 9; j++) {
+					rowString = rowString + board[i][j] + "";
+					if (j < 8) {
+						rowString  = rowString + " ";
+					}
+				}
+				System.out.println(rowString);
+				rowString = "";
+			}
+			
+			}
+			else {
+				print("No Solution");
+			}
+		}
+		
+		public void print(String s) {
+			System.out.println(s);
 		}
 			
 }
